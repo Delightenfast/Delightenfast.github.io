@@ -1,0 +1,64 @@
+---
+layout: post
+title:  "메신저 주고 받는 주기를 알아보자 - 예시 자료"
+date:   2025-01-07 14:06:50 +0900
+categories: [stats, theory]
+tags:       [stats, theory]
+author: author2
+math: true
+---
+
+개인적으로 정말 궁금해서, _**"메신저를 주고 받는 주기를 통해 메신저 대상과 나의 친밀도를 나타내볼 수 있지 않을까?"**_라는 가설에서 시작하게 된 고민입니다.
+
+### Stochastic Process 분류(?)
+
+확률 과정을 굳이 분류해보자면, **Bursty Process**와 **Random Process**가 있다고 해볼 수 있습니다. ([The origin of bursts and heavy tails in human dynamics](https://www.nature.com/articles/nature03459) 논문 참고)
+
+어떤 Event의 발생에 우선순위가 존재하면 Bursty Process이고, 그렇지 않으면 Random Process라고 정말 간단하게 생각해볼 수 있어요. 그리고 Bursty Process는 Event 발생 사이의 시간 간격의 분포(Inter-event time distribution: **IETD**)의 모양이 Random process의 경우와 너무나도 다른 점을 보이죠.
+
+Bursty Process의 IETD는 **Power-law 분포**를 따르고, Random Process의 IETD는 **Exponential 분포**를 따릅니다.
+
+_**"메신저를 주고 받는 주기를 통해 메신저 대상과 나의 친밀도를 나타내볼 수 있지 않을까?"**_는 이러한 이론적인 특징을 기반으로 세운 가설입니다.
+
+답장이 오는 Event의 IETD 분포 모양이 Power-law이면, 메신저 대상은 비교적 메신저 답장에 있어서 우선순위를 매기고 답장을 하고 있다는 것을 추론해볼 수 있겠죠? Exponential 분포를 따르면, 그냥 무작위로 답장을 하고 있는 것이겠구요. (그리고 아마도 대부분 Power-law를 따를 것이라고 추측해보고는 있어요. 실제 데이터를 보지는 못했지만요..)
+
+### 간단한 메신저 연락 모델
+
+$$x_t$$를 $$t$$ 시점에 상대방이 나한테 답장하고 싶은 정도에 대한 수치 값이라고 정의해볼게요. 그리고 $$x_t$$값은 모든 실수 범위이고, 음수일 때는 연락을 하지 않았다가, 양수가 되는 순간부터 연락을 하게 된다고 정의내릴게요. (이렇게 정의내리면 나중에 풀기 쉬워져서요...ㅎㅎ)
+
+$$
+x_t = x_{t-1} + \eta_t + c, \\
+\eta_t \sim i.i.c.d. \\
+c \text{ is constant.}
+$$
+
+$$\eta_t$$는 independently identically continuous distribution($$i.i.c.d.$$)에서 추출한 random variable이에요.
+
+$$c$$는 상대방이 나에게 관성적으로 답장하려고 하는(?) 경향을 나타내는 수치로 볼 수 있어요.
+
+### Survival Probability & First-passage Probability
+
+해당 개념은 정말 설명할게 너무 많은데, 간단하게만 말하면,  
+**Survival Probability**는 $$x_t$$ 값이 $$t$$시간까지 계속 음수일 확률, 혹은 계속 양수일 확률이에요.  
+**First-passage Probability**는 $$x_t$$ 값이 $$t$$시간까지 계속 음수였다가 딱 $$t$$시점에 양수로 전환될 확률, 혹은 $$t$$시간까지 계속 양수였다가 딱 $$t$$시점에 음수로 전환될 확률이에요.
+
+이것에 대해 자세히 이론적으로 다루는 내용은 [Record statistics and persistence for a random walk with a drift](https://arxiv.org/pdf/1206.6972.pdf) 논문에 잘 나와있어요. 한글로 풀어쓴 것은, 제 석사 졸업 논문인 [신기록 통계와 신기록 사이의 시간간격의 분포](https://www.riss.kr/link?id=T16385602)에 나와있어요.
+
+사실, 이 Random walk 모델은 너무나도 일반적인 모델이라서 이런 예시 외에도 정말 다양한 상황에 적용해서 설명해볼 수 있어요.
+
+### 상대방의 마음을 고려한 조금 더 정교한 연락 모델
+
+$$
+x_t = x_{t-1} + f_x(y_{t-1}) + \eta_t + c_x, \\
+y_t = y_{t-1} + f_y(x_{t-1}) + \eta_t' + c_y, \\
+\eta_t, \eta_t' \sim i.i.c.d., \\
+c_x, c_y \text{ are constants.}
+$$
+
+여기에서, $$y_t$$는 상대방에게 답장하고 싶은 나의 마음 상태라고 하면 될 것 같네요. $$f_x(y)$$는 $$y$$(나의 마음 상태)를 $$x$$(상대방)의 관점에서 받아들이는 함수에요. 잘하면, 생성 모델로 세워서 풀어볼 수도 있을 것 같긴 하네요...? 나중에 시간이 나면 해봐야겠어요.
+
+간단한 연락 모델은 이미 제가 달아놓은 논문의 형태로 결과가 나올 거에요.
+
+제가 결국 손으로 풀어보고 싶은 것은 정교한 연락 모델이죠. 다음 시간에 해당 모델에 대한 풀이를 최대한 해볼 수 있는 데까지 해보는 시간을 가져볼게요.
+
+감사합니다.
