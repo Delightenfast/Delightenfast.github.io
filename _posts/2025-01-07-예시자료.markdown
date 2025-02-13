@@ -6,6 +6,9 @@ categories: [stats, theory]
 tags:       [stats, theory]
 author: author2
 math: true
+sitemap: 
+    changefreq : daily
+    priority : 0.0
 ---
 
 개인적으로 정말 궁금해서, _**"메신저를 주고 받는 주기를 통해 메신저 대상과 나의 친밀도를 나타내볼 수 있지 않을까?"**_라는 가설에서 시작하게 된 고민입니다.
